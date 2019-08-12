@@ -1,0 +1,51 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name : Terraform AWS Cloudtrail
+
+# License of this project
+license: "MIT"
+
+# Canonical GitHub repo
+github_repo: clouddrove/terraform-aws-cloudtrail
+
+# Badges to display
+badges:
+  - name: "Terraform"
+    image: "https://img.shields.io/badge/Terraform-v0.12-green"
+    url: "https://www.terraform.io"
+  - name: "Licence"
+    image: "https://img.shields.io/badge/License-MIT-blue.svg"
+    url: "LICENSE.md"
+
+#  description of this project
+description: |-
+  Terraform module to provision an AWS CloudTrail with encrypted S3 bucket. This bucket is used to store CloudTrail logs.
+
+# extra content
+include:
+  - "terraform.md"
+
+# How to use this project
+usage : |-
+  ### Simple Example
+  Here is an example of how you can use this module in your inventory structure:
+  ```hcl
+      module "cloudtrail" {
+        source                        = "git::https://github.com/clouddrove/terraform-aws-cloudtrail.git"
+        name                          = "cloudtrail"
+        application                   = "clouddrove"
+        environment                   = "security"
+        label_order                   = ["environment", "name", "application"]
+        s3_bucket_name                = "s3-logs"
+        enable_logging                = true
+        enable_log_file_validation    = true
+        include_global_service_events = true
+        is_multi_region_trail         = false
+        kms_key_id                    = "arn:aws:kms:eu-west-1:xxxxxxxxx:key/xxxxxx-xxxx-xxxx-xxxxx"
+      }
+  ```
