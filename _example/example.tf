@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "s3_logs" {
-  source = "git::https://github.com/clouddrove/terraform-aws-s3.git"
+  source = "git::https://github.com/clouddrove/terraform-aws-s3.git?ref=tags/0.12.1"
 
   name                    = "bucket-log"
   region                  = "eu-west-1"
@@ -19,7 +19,7 @@ module "s3_logs" {
 }
 
 module "kms_key" {
-  source = "git::https://github.com/clouddrove/terraform-aws-kms.git"
+  source = "git::https://github.com/clouddrove/terraform-aws-kms.git?ref=tags/0.12.1"
 
   name        = "kms"
   application = "clouddrove"
@@ -34,7 +34,7 @@ module "kms_key" {
 }
 
 module "cloudtrail" {
-  source = "git::https://github.com/clouddrove/terraform-aws-cloudtrail.git"
+  source = "git::https://github.com/clouddrove/terraform-aws-cloudtrail.git?ref=tags/0.12.1"
 
   name        = "cloudtrail"
   application = "clouddrove"
@@ -46,6 +46,7 @@ module "cloudtrail" {
   enable_log_file_validation    = true
   include_global_service_events = true
   is_multi_region_trail         = false
+  is_organization_trail         = false
   kms_key_id                    = module.kms_key.key_arn
 }
 
@@ -139,7 +140,7 @@ data "aws_iam_policy_document" "default" {
     ]
 
     resources = [
-      "arn:aws:s3:::${module.s3_logs.id}",
+      format("arn:aws:s3:::%s", module.s3_logs.id),
     ]
   }
 
@@ -156,7 +157,7 @@ data "aws_iam_policy_document" "default" {
     ]
 
     resources = [
-      "arn:aws:s3:::${module.s3_logs.id}/*",
+      format("arn:aws:s3:::%s/*", module.s3_logs.id),
     ]
 
     condition {
