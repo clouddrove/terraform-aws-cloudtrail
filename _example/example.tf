@@ -140,7 +140,7 @@ data "aws_iam_policy_document" "default" {
     ]
 
     resources = [
-      format("arn:aws:s3:::%s", module.s3_logs.id),
+      "arn:aws:s3:::security-bucket-log-clouddrove",
     ]
   }
 
@@ -157,7 +157,7 @@ data "aws_iam_policy_document" "default" {
     ]
 
     resources = [
-      format("arn:aws:s3:::%s/*", module.s3_logs.id),
+      "arn:aws:s3:::security-bucket-log-clouddrove/*",
     ]
 
     condition {
