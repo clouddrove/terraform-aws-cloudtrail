@@ -34,7 +34,7 @@ module "kms_key" {
 }
 
 module "cloudtrail" {
-  source = "git::https://github.com/clouddrove/terraform-aws-cloudtrail.git?ref=tags/0.12.1"
+  source = "../"
 
   name        = "cloudtrail"
   application = "clouddrove"

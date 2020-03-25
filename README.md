@@ -38,7 +38,7 @@
 <hr>
 
 
-We eat, drink, sleep and most importantly love **DevOps**. We are working towards stratergies for standardizing architecture while ensuring security for the infrastructure. We are strong believer of the philosophy <b>Bigger problems are always solved by breaking them into smaller manageable problems</b>. Resonating with microservices architecture, it is considered best-practice to run database, cluster, storage in smaller <b>connected yet manageable pieces</b> within the infrastructure.
+We eat, drink, sleep and most importantly love **DevOps**. We are working towards strategies for standardizing architecture while ensuring security for the infrastructure. We are strong believer of the philosophy <b>Bigger problems are always solved by breaking them into smaller manageable problems</b>. Resonating with microservices architecture, it is considered best-practice to run database, cluster, storage in smaller <b>connected yet manageable pieces</b> within the infrastructure.
 
 This module is basically combination of [Terraform open source](https://www.terraform.io/) and includes automatation tests and examples. It also helps to create and improve your infrastructure with minimalistic code instead of maintaining the whole infrastructure code yourself.
 
@@ -61,7 +61,9 @@ This module has a few dependencies:
 
 
 
+
 ## Examples
+
 
 **IMPORTANT:** Since the `master` branch used in `source` varies based on new modifications, we suggest that you use the release versions [here](https://github.com/clouddrove/terraform-aws-cloudtrail/releases).
 
@@ -70,7 +72,7 @@ This module has a few dependencies:
 Here is an example of how you can use this module in your inventory structure:
 ```hcl
     module "cloudtrail" {
-      source                        = "git::https://github.com/clouddrove/terraform-aws-cloudtrail.git?ref=tags/0.12.1"
+      source                        = "git::https://github.com/clouddrove/terraform-aws-cloudtrail.git?ref=tags/0.12.3"
       name                          = "cloudtrail"
       application                   = "clouddrove"
       environment                   = "security"
@@ -86,41 +88,45 @@ Here is an example of how you can use this module in your inventory structure:
 
 
 
+
+
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| application | Application (e.g. `cd` or `clouddrove`). | string | `` | no |
-| attributes | Additional attributes (e.g. `1`). | list(string) | `<list>` | no |
-| cloud_watch_logs_group_arn | Specifies a log group name using an Amazon Resource Name (ARN), that represents the log group to which CloudTrail logs will be delivered. | string | `` | no |
-| cloud_watch_logs_role_arn | Specifies the role for the CloudWatch Logs endpoint to assume to write to a user’s log group. | string | `` | no |
-| enable_log_file_validation | Specifies whether log file integrity validation is enabled. Creates signed digest for validated contents of logs. | bool | `true` | no |
-| enable_logging | Enable logging for the trail. | bool | `true` | no |
-| enabled_cloudtrail | If true, deploy the resources for the module. | bool | `true` | no |
-| environment | Environment (e.g. `prod`, `dev`, `staging`). | string | `` | no |
-| event_selector | Specifies an event selector for enabling data event logging, It needs to be a list of map values. See: https://www.terraform.io/docs/providers/aws/r/cloudtrail.html for details on this map variable. | list(string) | `<list>` | no |
-| include_global_service_events | Specifies whether the trail is publishing events from global services such as IAM to the log files. | bool | `false` | no |
-| is_multi_region_trail | Specifies whether the trail is created in the current region or in all regions. | bool | `false` | no |
-| is_organization_trail | The trail is an AWS Organizations trail. | bool | `false` | no |
-| kms_key_id | Specifies the KMS key ARN to use to encrypt the logs delivered by CloudTrail. | string | `` | no |
-| label_order | Label order, e.g. `name`,`application`. | list | `<list>` | no |
-| name | Name  (e.g. `app` or `cluster`). | string | - | yes |
-| s3_bucket_name | S3 bucket name for CloudTrail log. | string | - | yes |
-| tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`). | map(string) | `<map>` | no |
+| application | Application \(e.g. `cd` or `clouddrove`\). | string | `""` | no |
+| attributes | Additional attributes \(e.g. `1`\). | list(string) | `<list>` | no |
+| cloud\_watch\_logs\_group\_arn | Specifies a log group name using an Amazon Resource Name \(ARN\), that represents the log group to which CloudTrail logs will be delivered. | string | `""` | no |
+| cloud\_watch\_logs\_role\_arn | Specifies the role for the CloudWatch Logs endpoint to assume to write to a user’s log group. | string | `""` | no |
+| enable\_log\_file\_validation | Specifies whether log file integrity validation is enabled. Creates signed digest for validated contents of logs. | bool | `"true"` | no |
+| enable\_logging | Enable logging for the trail. | bool | `"true"` | no |
+| enabled\_cloudtrail | If true, deploy the resources for the module. | bool | `"true"` | no |
+| environment | Environment \(e.g. `prod`, `dev`, `staging`\). | string | `""` | no |
+| event\_selector | Specifies an event selector for enabling data event logging, It needs to be a list of map values. See: https://www.terraform.io/docs/providers/aws/r/cloudtrail.html for details on this map variable. | list(string) | `<list>` | no |
+| include\_global\_service\_events | Specifies whether the trail is publishing events from global services such as IAM to the log files. | bool | `"false"` | no |
+| is\_multi\_region\_trail | Specifies whether the trail is created in the current region or in all regions. | bool | `"false"` | no |
+| is\_organization\_trail | The trail is an AWS Organizations trail. | bool | `"false"` | no |
+| kms\_key\_id | Specifies the KMS key ARN to use to encrypt the logs delivered by CloudTrail. | string | `""` | no |
+| label\_order | Label order, e.g. `name`,`application`. | list | `<list>` | no |
+| managedby | ManagedBy, eg 'CloudDrove' or 'AnmolNagpal'. | string | `"anmol@clouddrove.com"` | no |
+| name | Name  \(e.g. `app` or `cluster`\). | string | n/a | yes |
+| s3\_bucket\_name | S3 bucket name for CloudTrail log. | string | n/a | yes |
+| tags | Additional tags \(e.g. map\(`BusinessUnit`,`XYZ`\). | map(string) | `<map>` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | arn | The Amazon Resource Name of the trail. |
-| home_region | The region in which the trail was created. |
+| home\_region | The region in which the trail was created. |
 | id | The name of the trail. |
 | tags | A mapping of tags to assign to the resource. |
 
 
 
-## Testing
 
+## Testing
 In this module testing is performed with [terratest](https://github.com/gruntwork-io/terratest) and it creates a small piece of infrastructure, matches the output like ARN, ID and Tags name etc and destroy infrastructure in your AWS account. This testing is written in GO, so you need a [GO environment](https://golang.org/doc/install) in your system.
 
 You need to run the following command in the testing folder:
