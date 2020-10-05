@@ -7,7 +7,7 @@
     Terraform AWS Cloudtrail
 </h1>
 
-<p align="center" style="font-size: 1.2rem;"> 
+<p align="center" style="font-size: 1.2rem;">
     Terraform module to provision an AWS CloudTrail with encrypted S3 bucket. This bucket is used to store CloudTrail logs.
      </p>
 
@@ -38,7 +38,7 @@
 <hr>
 
 
-We eat, drink, sleep and most importantly love **DevOps**. We are working towards strategies for standardizing architecture while ensuring security for the infrastructure. We are strong believer of the philosophy <b>Bigger problems are always solved by breaking them into smaller manageable problems</b>. Resonating with microservices architecture, it is considered best-practice to run database, cluster, storage in smaller <b>connected yet manageable pieces</b> within the infrastructure. 
+We eat, drink, sleep and most importantly love **DevOps**. We are working towards strategies for standardizing architecture while ensuring security for the infrastructure. We are strong believer of the philosophy <b>Bigger problems are always solved by breaking them into smaller manageable problems</b>. Resonating with microservices architecture, it is considered best-practice to run database, cluster, storage in smaller <b>connected yet manageable pieces</b> within the infrastructure.
 
 This module is basically combination of [Terraform open source](https://www.terraform.io/) and includes automatation tests and examples. It also helps to create and improve your infrastructure with minimalistic code instead of maintaining the whole infrastructure code yourself.
 
@@ -49,9 +49,9 @@ We have [*fifty plus terraform modules*][terraform_modules]. A few of them are c
 
 ## Prerequisites
 
-This module has a few dependencies: 
+This module has a few dependencies:
 
-- [Terraform 0.13](https://learn.hashicorp.com/terraform/getting-started/install.html)
+- [Terraform 0.12](https://learn.hashicorp.com/terraform/getting-started/install.html)
 - [Go](https://golang.org/doc/install)
 - [github.com/stretchr/testify/assert](https://github.com/stretchr/testify)
 - [github.com/gruntwork-io/terratest/modules/terraform](https://github.com/gruntwork-io/terratest)
@@ -72,7 +72,7 @@ This module has a few dependencies:
 Here is an example of how you can use this module in your inventory structure:
 ```hcl
     module "cloudtrail" {
-      source                        = "git::https://github.com/clouddrove/terraform-aws-cloudtrail.git?ref=tags/0.12.5"
+      source                        = "git::https://github.com/clouddrove/terraform-aws-cloudtrail.git?ref=tags/0.12.3"
       name                          = "cloudtrail"
       application                   = "clouddrove"
       environment                   = "security"
@@ -127,7 +127,7 @@ Here is an example of how you can use this module in your inventory structure:
 
 
 ## Testing
-In this module testing is performed with [terratest](https://github.com/gruntwork-io/terratest) and it creates a small piece of infrastructure, matches the output like ARN, ID and Tags name etc and destroy infrastructure in your AWS account. This testing is written in GO, so you need a [GO environment](https://golang.org/doc/install) in your system. 
+In this module testing is performed with [terratest](https://github.com/gruntwork-io/terratest) and it creates a small piece of infrastructure, matches the output like ARN, ID and Tags name etc and destroy infrastructure in your AWS account. This testing is written in GO, so you need a [GO environment](https://golang.org/doc/install) in your system.
 
 You need to run the following command in the testing folder:
 ```hcl
@@ -136,7 +136,7 @@ You need to run the following command in the testing folder:
 
 
 
-## Feedback 
+## Feedback
 If you come accross a bug or have any feedback, please log it in our [issue tracker](https://github.com/clouddrove/terraform-aws-cloudtrail/issues), or feel free to drop us an email at [hello@clouddrove.com](mailto:hello@clouddrove.com).
 
 If you have found it worth your time, go ahead and give us a ★ on [our GitHub](https://github.com/clouddrove/terraform-aws-cloudtrail)!
