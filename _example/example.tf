@@ -3,10 +3,9 @@ provider "aws" {
 }
 
 module "s3_logs" {
-  source = "git::https://github.com/clouddrove/terraform-aws-s3.git?ref=tags/0.12.1"
+  source = "git::https://github.com/clouddrove/terraform-aws-s3.git"
 
   name                    = "bucket-log"
-  region                  = "eu-west-1"
   application             = "clouddrove"
   environment             = "security"
   label_order             = ["environment", "name", "application"]

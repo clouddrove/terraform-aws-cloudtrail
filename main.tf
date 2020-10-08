@@ -7,7 +7,7 @@
 #              for resources. You can use terraform-labels to implement a strict naming
 #              convention.
 module "labels" {
-  source = "git::https://github.com/clouddrove/terraform-labels.git?ref=tags/0.12.0"
+  source = "git::https://github.com/clouddrove/terraform-labels.git?ref=tags/0.13.0"
 
   name        = var.name
   application = var.application
@@ -33,4 +33,9 @@ resource "aws_cloudtrail" "default" {
   kms_key_id                    = var.kms_key_id
   is_organization_trail         = var.is_organization_trail
   tags                          = module.labels.tags
+  sns_topic_name                = var.sns_topic_name
+  event_selector {
+    read_write_type           = "All"
+    include_management_events = true
+  }
 }
