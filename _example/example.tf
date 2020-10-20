@@ -3,8 +3,8 @@ provider "aws" {
 }
 
 module "s3_logs" {
-  source = "git::https://github.com/clouddrove/terraform-aws-s3.git"
-
+  source                  = "clouddrove/s3/aws"
+  version                 = "0.13.0"
   name                    = "bucket-log"
   application             = "clouddrove"
   environment             = "security"
@@ -18,8 +18,8 @@ module "s3_logs" {
 }
 
 module "kms_key" {
-  source = "git::https://github.com/clouddrove/terraform-aws-kms.git?ref=tags/0.12.1"
-
+  source      = "clouddrove/kms/aws"
+  version     = "0.13.0"
   name        = "kms"
   application = "clouddrove"
   environment = "test"
