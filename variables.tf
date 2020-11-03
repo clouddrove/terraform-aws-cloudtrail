@@ -91,9 +91,45 @@ variable "cloud_watch_logs_group_arn" {
 }
 
 variable "event_selector" {
+  type        = bool
+  default     = true
+  description = "Specifies an event selector for enabling data event logging. Fields documented below. Please note the CloudTrail limits when configuring these."
+}
+
+variable "read_write_type" {
+  type        = string
+  default     = "All"
+  description = "Specify if you want your trail to log read-only events, write-only events, or all. By default, the value is All."
+}
+
+variable "include_management_events" {
+  type        = bool
+  default     = true
+  description = " Specify if you want your event selector to include management events for your trail."
+}
+
+variable "data_resource" {
+  type        = bool
+  default     = true
+  description = " Specify if you want your event selector to include management events for your trail."
+}
+
+variable "event_selector_data_resource" {
+  type        = bool
+  default     = false
+  description = "Specifies logging data events. Fields documented below."
+}
+
+variable "data_resource_type" {
+  type        = string
+  default     = "AWS::S3::Object"
+  description = "The resource type in which you want to log data events. You can specify only the following value: `AWS::S3::Object` `AWS::Lambda::Function`."
+}
+
+variable "data_resource_values" {
   type        = list(string)
-  default     = []
-  description = "Specifies an event selector for enabling data event logging, It needs to be a list of map values. See: https://www.terraform.io/docs/providers/aws/r/cloudtrail.html for details on this map variable."
+  default     = ["arn:aws:s3:::my_corporate_bucket"]
+  description = "A list of ARN for the specified S3 buckets and object prefixes."
 }
 
 variable "kms_key_id" {
@@ -110,6 +146,6 @@ variable "is_organization_trail" {
 
 variable "sns_topic_name" {
   type        = string
-  default     = "testing"
+  default     = null
   description = "Specifies the name of the Amazon SNS topic defined for notification of log file delivery."
 }
