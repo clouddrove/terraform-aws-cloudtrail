@@ -34,16 +34,16 @@ resource "aws_cloudtrail" "default" {
   tags                          = module.labels.tags
   sns_topic_name                = var.sns_topic_name
   dynamic "event_selector" {
-    for_each = var.event_selector  ? [true] : []
+    for_each = var.event_selector ? [true] : []
     content {
-      read_write_type = var.read_write_type
+      read_write_type           = var.read_write_type
       include_management_events = var.include_management_events
       dynamic "data_resource" {
         for_each = var.event_selector_data_resource ? ["true"] : []
-         content {
-           type  = var.data_resource_type
-           values = var.data_resource_values
-         }
+        content {
+          type   = var.data_resource_type
+          values = var.data_resource_values
+        }
       }
     }
   }
