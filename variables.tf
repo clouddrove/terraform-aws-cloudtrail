@@ -5,11 +5,18 @@ variable "name" {
   description = "Name  (e.g. `app` or `cluster`)."
 }
 
-variable "application" {
+variable "repository" {
   type        = string
   default     = ""
-  description = "Application (e.g. `cd` or `clouddrove`)."
+  description = "Terraform current module repo"
+
+  validation {
+    # regex(...) fails if it cannot find a match
+    condition     = can(regex("^https://", var.repository))
+    error_message = "The module-repo value must be a valid Git repo link."
+  }
 }
+
 
 variable "environment" {
   type        = string
@@ -37,8 +44,8 @@ variable "tags" {
 
 variable "managedby" {
   type        = string
-  default     = "anmol@clouddrove.com"
-  description = "ManagedBy, eg 'CloudDrove' or 'AnmolNagpal'."
+  default     = "hello@clouddrove.com"
+  description = "ManagedBy, eg 'CloudDrove'."
 }
 
 #Module      : CLOUDTRAIL
@@ -82,24 +89,28 @@ variable "cloud_watch_logs_role_arn" {
   type        = string
   default     = ""
   description = "Specifies the role for the CloudWatch Logs endpoint to assume to write to a user’s log group."
+  sensitive   = true
 }
 
 variable "cloud_watch_logs_group_arn" {
   type        = string
   default     = ""
   description = "Specifies a log group name using an Amazon Resource Name (ARN), that represents the log group to which CloudTrail logs will be delivered."
+  sensitive   = true
 }
 
 variable "event_selector" {
   type        = list(string)
   default     = []
   description = "Specifies an event selector for enabling data event logging, It needs to be a list of map values. See: https://www.terraform.io/docs/providers/aws/r/cloudtrail.html for details on this map variable."
+  sensitive   = true
 }
 
 variable "kms_key_id" {
   type        = string
   default     = ""
   description = "Specifies the KMS key ARN to use to encrypt the logs delivered by CloudTrail."
+  sensitive   = true
 }
 
 variable "is_organization_trail" {
