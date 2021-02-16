@@ -29,13 +29,25 @@ resource "aws_cloudtrail" "default" {
   is_multi_region_trail         = var.is_multi_region_trail
   include_global_service_events = var.include_global_service_events
   cloud_watch_logs_role_arn     = var.cloud_watch_logs_role_arn
-  cloud_watch_logs_group_arn    = format("%s:*", var.cloud_watch_logs_group_arn)
   kms_key_id                    = var.kms_key_id
   is_organization_trail         = var.is_organization_trail
   tags                          = module.labels.tags
   sns_topic_name                = var.sns_topic_name
-  event_selector {
-    read_write_type           = "All"
-    include_management_events = true
+  dynamic "event_selector" {
+    for_each = var.event_selector ? [true] : []
+    content {
+      read_write_type           = var.read_write_type
+      include_management_events = var.include_management_events
+      dynamic "data_resource" {
+        for_each = var.event_selector_data_resource ? ["true"] : []
+        content {
+          type   = var.data_resource_type
+          values = var.data_resource_values
+        }
+      }
+    }
+  }
+  lifecycle {
+    ignore_changes = [event_selector]
   }
 }
