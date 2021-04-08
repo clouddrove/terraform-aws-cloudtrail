@@ -4,7 +4,7 @@ provider "aws" {
 
 module "s3_logs" {
   source  = "clouddrove/s3/aws"
-  version = "0.13.0"
+  version = "0.14.0"
 
   name                    = "bucket-logs"
   repository              = "https://registry.terraform.io/modules/clouddrove/s3/aws/latest"
@@ -20,7 +20,7 @@ module "s3_logs" {
 
 module "kms_key" {
   source  = "clouddrove/kms/aws"
-  version = "0.13.0"
+  version = "0.14.0"
 
   name        = "kms"
   repository  = "https://registry.terraform.io/modules/clouddrove/kms/aws/latest"
