@@ -9,12 +9,6 @@ variable "repository" {
   type        = string
   default     = ""
   description = "Terraform current module repo"
-
-  validation {
-    # regex(...) fails if it cannot find a match
-    condition     = can(regex("^https://", var.repository))
-    error_message = "The module-repo value must be a valid Git repo link."
-  }
 }
 
 
@@ -121,6 +115,6 @@ variable "is_organization_trail" {
 
 variable "sns_topic_name" {
   type        = string
-  default     = "testing"
+  default     = ""
   description = "Specifies the name of the Amazon SNS topic defined for notification of log file delivery."
 }
