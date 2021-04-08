@@ -3,12 +3,13 @@ provider "aws" {
 }
 
 module "s3_logs" {
-  source                  = "clouddrove/s3/aws"
-  version                 = "0.13.0"
-  name                    = "bucket-log"
-  application             = "clouddrove"
+  source  = "clouddrove/s3/aws"
+  version = "0.14.0"
+
+  name                    = "bucket-logs"
+  repository              = "https://registry.terraform.io/modules/clouddrove/s3/aws/latest"
   environment             = "security"
-  label_order             = ["environment", "name", "application"]
+  label_order             = ["name", "environment"]
   versioning              = true
   acl                     = "log-delivery-write"
   bucket_enabled          = true
@@ -18,12 +19,13 @@ module "s3_logs" {
 }
 
 module "kms_key" {
-  source      = "clouddrove/kms/aws"
-  version     = "0.13.0"
+  source  = "clouddrove/kms/aws"
+  version = "0.14.0"
+
   name        = "kms"
-  application = "clouddrove"
+  repository  = "https://registry.terraform.io/modules/clouddrove/kms/aws/latest"
   environment = "test"
-  label_order = ["environment", "name", "application"]
+  label_order = ["name", "environment"]
 
   description             = "KMS key for cloudtrail"
   deletion_window_in_days = 7
@@ -35,11 +37,10 @@ module "kms_key" {
 module "cloudtrail" {
   source = "../"
 
-  name        = "cloudtrail"
-  application = "clouddrove"
-  environment = "security"
-  label_order = ["environment", "name", "application"]
-
+  name                          = "cloudtrail"
+  repository                    = "https://registry.terraform.io/modules/clouddrove/cloudtrail/aws/latest"
+  environment                   = "security"
+  label_order                   = ["name", "environment"]
   s3_bucket_name                = module.s3_logs.id
   enable_logging                = true
   enable_log_file_validation    = true

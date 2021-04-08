@@ -5,11 +5,12 @@ variable "name" {
   description = "Name  (e.g. `app` or `cluster`)."
 }
 
-variable "application" {
+variable "repository" {
   type        = string
   default     = ""
-  description = "Application (e.g. `cd` or `clouddrove`)."
+  description = "Terraform current module repo"
 }
+
 
 variable "environment" {
   type        = string
@@ -18,7 +19,7 @@ variable "environment" {
 }
 
 variable "label_order" {
-  type        = list
+  type        = list(any)
   default     = []
   description = "Label order, e.g. `name`,`application`."
 }
@@ -37,8 +38,8 @@ variable "tags" {
 
 variable "managedby" {
   type        = string
-  default     = "anmol@clouddrove.com"
-  description = "ManagedBy, eg 'CloudDrove' or 'AnmolNagpal'."
+  default     = "hello@clouddrove.com"
+  description = "ManagedBy, eg 'CloudDrove'."
 }
 
 #Module      : CLOUDTRAIL
@@ -82,12 +83,14 @@ variable "cloud_watch_logs_role_arn" {
   type        = string
   default     = ""
   description = "Specifies the role for the CloudWatch Logs endpoint to assume to write to a user’s log group."
+  sensitive   = true
 }
 
 variable "cloud_watch_logs_group_arn" {
   type        = string
   default     = ""
   description = "Specifies a log group name using an Amazon Resource Name (ARN), that represents the log group to which CloudTrail logs will be delivered."
+  sensitive   = true
 }
 
 variable "event_selector" {
@@ -128,14 +131,16 @@ variable "data_resource_type" {
 
 variable "data_resource_values" {
   type        = list(string)
-  default     = ["arn:aws:s3:::my_corporate_bucket"]
-  description = "A list of ARN for the specified S3 buckets and object prefixes."
+  default     = []
+  description = "Specifies an event selector for enabling data event logging, It needs to be a list of map values. See: https://www.terraform.io/docs/providers/aws/r/cloudtrail.html for details on this map variable."
+  sensitive   = true
 }
 
 variable "kms_key_id" {
   type        = string
   default     = ""
   description = "Specifies the KMS key ARN to use to encrypt the logs delivered by CloudTrail."
+  sensitive   = true
 }
 
 variable "is_organization_trail" {
