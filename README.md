@@ -14,7 +14,7 @@
 <p align="center">
 
 <a href="https://www.terraform.io">
-  <img src="https://img.shields.io/badge/terraform-v0.13-green" alt="Terraform">
+  <img src="https://img.shields.io/badge/terraform-v0.14-green" alt="Terraform">
 </a>
 <a href="LICENSE.md">
   <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="Licence">
@@ -74,10 +74,11 @@ Here is an example of how you can use this module in your inventory structure:
     module "cloudtrail" {
       source                        = "clouddrove/cloudtrail/aws"
       version                       = "0.13.0"
+
       name                          = "cloudtrail"
-      application                   = "clouddrove"
+      repository                    = "https://registry.terraform.io/modules/clouddrove/cloudtrail/aws/latest"
       environment                   = "security"
-      label_order                   = ["environment", "name", "application"]
+      label_order                   = ["name", "environment"]
       s3_bucket_name                = "s3-logs"
       enable_logging                = true
       enable_log_file_validation    = true
@@ -96,13 +97,12 @@ Here is an example of how you can use this module in your inventory structure:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| application | Application (e.g. `cd` or `clouddrove`). | `string` | `""` | no |
 | attributes | Additional attributes (e.g. `1`). | `list(string)` | `[]` | no |
 | cloud\_watch\_logs\_group\_arn | Specifies a log group name using an Amazon Resource Name (ARN), that represents the log group to which CloudTrail logs will be delivered. | `string` | `""` | no |
 | cloud\_watch\_logs\_role\_arn | Specifies the role for the CloudWatch Logs endpoint to assume to write to a user’s log group. | `string` | `""` | no |
 | data\_resource | Specify if you want your event selector to include management events for your trail. | `bool` | `true` | no |
 | data\_resource\_type | The resource type in which you want to log data events. You can specify only the following value: `AWS::S3::Object` `AWS::Lambda::Function`. | `string` | `"AWS::S3::Object"` | no |
-| data\_resource\_values | A list of ARN for the specified S3 buckets and object prefixes. | `list(string)` | <pre>[<br>  "arn:aws:s3:::my_corporate_bucket"<br>]</pre> | no |
+| data\_resource\_values | Specifies an event selector for enabling data event logging, It needs to be a list of map values. See: https://www.terraform.io/docs/providers/aws/r/cloudtrail.html for details on this map variable. | `list(string)` | `[]` | no |
 | enable\_log\_file\_validation | Specifies whether log file integrity validation is enabled. Creates signed digest for validated contents of logs. | `bool` | `true` | no |
 | enable\_logging | Enable logging for the trail. | `bool` | `true` | no |
 | enabled\_cloudtrail | If true, deploy the resources for the module. | `bool` | `true` | no |
@@ -114,10 +114,11 @@ Here is an example of how you can use this module in your inventory structure:
 | is\_multi\_region\_trail | Specifies whether the trail is created in the current region or in all regions. | `bool` | `false` | no |
 | is\_organization\_trail | The trail is an AWS Organizations trail. | `bool` | `false` | no |
 | kms\_key\_id | Specifies the KMS key ARN to use to encrypt the logs delivered by CloudTrail. | `string` | `""` | no |
-| label\_order | Label order, e.g. `name`,`application`. | `list` | `[]` | no |
-| managedby | ManagedBy, eg 'CloudDrove' or 'AnmolNagpal'. | `string` | `"anmol@clouddrove.com"` | no |
+| label\_order | Label order, e.g. `name`,`application`. | `list(any)` | `[]` | no |
+| managedby | ManagedBy, eg 'CloudDrove'. | `string` | `"hello@clouddrove.com"` | no |
 | name | Name  (e.g. `app` or `cluster`). | `string` | n/a | yes |
 | read\_write\_type | Specify if you want your trail to log read-only events, write-only events, or all. By default, the value is All. | `string` | `"All"` | no |
+| repository | Terraform current module repo | `string` | `""` | no |
 | s3\_bucket\_name | S3 bucket name for CloudTrail log. | `string` | n/a | yes |
 | sns\_topic\_name | Specifies the name of the Amazon SNS topic defined for notification of log file delivery. | `string` | `null` | no |
 | tags | Additional tags (e.g. map(`BusinessUnit`,`XYZ`). | `map(string)` | `{}` | no |
