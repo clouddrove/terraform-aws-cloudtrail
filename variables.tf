@@ -58,13 +58,13 @@ variable "enable_log_file_validation" {
 
 variable "is_multi_region_trail" {
   type        = bool
-  default     = false
+  default     = true
   description = "Specifies whether the trail is created in the current region or in all regions."
 }
 
 variable "include_global_service_events" {
   type        = bool
-  default     = false
+  default     = true
   description = "Specifies whether the trail is publishing events from global services such as IAM to the log files."
 }
 
