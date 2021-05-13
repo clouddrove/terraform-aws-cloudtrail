@@ -109,9 +109,9 @@ Here is an example of how you can use this module in your inventory structure:
 | environment | Environment (e.g. `prod`, `dev`, `staging`). | `string` | `""` | no |
 | event\_selector | Specifies an event selector for enabling data event logging. Fields documented below. Please note the CloudTrail limits when configuring these. | `bool` | `true` | no |
 | event\_selector\_data\_resource | Specifies logging data events. Fields documented below. | `bool` | `false` | no |
-| include\_global\_service\_events | Specifies whether the trail is publishing events from global services such as IAM to the log files. | `bool` | `false` | no |
+| include\_global\_service\_events | Specifies whether the trail is publishing events from global services such as IAM to the log files. | `bool` | `true` | no |
 | include\_management\_events | Specify if you want your event selector to include management events for your trail. | `bool` | `true` | no |
-| is\_multi\_region\_trail | Specifies whether the trail is created in the current region or in all regions. | `bool` | `false` | no |
+| is\_multi\_region\_trail | Specifies whether the trail is created in the current region or in all regions. | `bool` | `true` | no |
 | is\_organization\_trail | The trail is an AWS Organizations trail. | `bool` | `false` | no |
 | kms\_key\_id | Specifies the KMS key ARN to use to encrypt the logs delivered by CloudTrail. | `string` | `""` | no |
 | label\_order | Label order, e.g. `name`,`application`. | `list(any)` | `[]` | no |
