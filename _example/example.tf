@@ -45,7 +45,6 @@ module "cloudtrail" {
   enable_logging                = true
   enable_log_file_validation    = true
   include_global_service_events = true
-  is_multi_region_trail         = false
   is_organization_trail         = false
   kms_key_id                    = module.kms_key.key_arn
 }
