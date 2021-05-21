@@ -56,12 +56,6 @@ variable "enable_log_file_validation" {
   description = "Specifies whether log file integrity validation is enabled. Creates signed digest for validated contents of logs."
 }
 
-variable "is_multi_region_trail" {
-  type        = bool
-  default     = true
-  description = "Specifies whether the trail is created in the current region or in all regions."
-}
-
 variable "include_global_service_events" {
   type        = bool
   default     = true
