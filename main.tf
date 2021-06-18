@@ -54,4 +54,3 @@ resource "aws_cloudtrail" "default" {
     ignore_changes = [event_selector]
   }
 }
-

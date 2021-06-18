@@ -62,7 +62,6 @@ module "s3_logs" {
   version = "0.15.0"
 
   name                    = "bucket-logs"
-  repository              = "https://registry.terraform.io/modules/clouddrove/s3/aws/latest"
   environment             = "security"
   label_order             = ["name", "environment"]
   versioning              = true
@@ -74,10 +73,9 @@ module "s3_logs" {
 
 module "kms_key" {
   source  = "clouddrove/kms/aws"
-  version = "0.14.0"
+  version = "0.15.0"
 
   name        = "kms"
-  repository  = "https://registry.terraform.io/modules/clouddrove/kms/aws/latest"
   environment = "test"
   label_order = ["name", "environment"]
 
@@ -93,7 +91,6 @@ module "cloudtrail" {
   source = "../"
 
   name                          = "cloudtrail"
-  repository                    = "https://registry.terraform.io/modules/clouddrove/cloudtrail/aws/latest"
   environment                   = "security"
   label_order                   = ["name", "environment"]
   s3_bucket_name                = module.s3_logs.id

@@ -7,7 +7,7 @@ variable "name" {
 
 variable "repository" {
   type        = string
-  default     = ""
+  default     = "https://github.com/clouddrove/terraform-aws-cloudtrail"
   description = "Terraform current module repo"
 }
 

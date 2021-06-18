@@ -42,7 +42,6 @@ usage: |-
         version                       = "0.15.0"
 
         name                          = "cloudtrail"
-        repository                    = "https://registry.terraform.io/modules/clouddrove/cloudtrail/aws/latest"
         environment                   = "security"
         label_order                   = ["name", "environment"]
         s3_bucket_name                = "s3-logs"
