@@ -24,7 +24,7 @@ module "s3_logs" {
 
 
 module "cloudtrail" {
-  source = "../../"
+  source = "../"
 
   name                          = "cloudtrail"
   environment                   = "security"
