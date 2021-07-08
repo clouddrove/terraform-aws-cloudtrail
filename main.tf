@@ -30,9 +30,9 @@ resource "aws_cloudtrail" "default" {
   enable_log_file_validation    = var.enable_log_file_validation
   is_multi_region_trail         = true
   include_global_service_events = var.include_global_service_events
-  cloud_watch_logs_role_arn     = var.cloud_watch_logs_role_arn
-  cloud_watch_logs_group_arn    = format("%s:*", var.cloud_watch_logs_group_arn)
-  kms_key_id                    = var.kms_key_id
+  cloud_watch_logs_role_arn     = aws_iam_role.cloudtrail_cloudwatch_role.arn
+  cloud_watch_logs_group_arn    = "${aws_cloudwatch_log_group.cloudtrail.arn}:*"
+  kms_key_id                    = aws_kms_key.cloudtrail.arn
   is_organization_trail         = var.is_organization_trail
   tags                          = module.labels.tags
   sns_topic_name                = var.sns_topic_name
@@ -52,5 +52,141 @@ resource "aws_cloudtrail" "default" {
   }
   lifecycle {
     ignore_changes = [event_selector]
+  }
+  depends_on = [
+    aws_kms_key.cloudtrail,
+  ]
+}
+
+
+data "aws_caller_identity" "current" {}
+
+data "aws_partition" "current" {}
+
+data "aws_iam_policy_document" "cloudtrail_assume_role" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
+    }
+  }
+}
+# This role is used by CloudTrail to send logs to CloudWatch.
+resource "aws_iam_role" "cloudtrail_cloudwatch_role" {
+  name               = var.iam_role_name
+  assume_role_policy = data.aws_iam_policy_document.cloudtrail_assume_role.json
+}
+resource "aws_cloudwatch_log_group" "cloudtrail" {
+  name              = var.cloudwatch_log_group_name
+  retention_in_days = var.log_retention_days
+  kms_key_id        = aws_kms_key.cloudtrail.arn
+}
+data "aws_iam_policy_document" "cloudtrail_cloudwatch_logs" {
+  statement {
+    sid = "WriteCloudWatchLogs"
+
+    effect = "Allow"
+
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+
+    resources = ["arn:${data.aws_partition.current.partition}:logs:eu-west-1:${data.aws_caller_identity.current.account_id}:log-group:cloudwatch-log-group:*"]
+  }
+}
+resource "aws_iam_policy" "cloudtrail_cloudwatch_logs" {
+  name   = "cloudtrail-cloudwatch-logs-policy"
+  policy = data.aws_iam_policy_document.cloudtrail_cloudwatch_logs.json
+}
+resource "aws_iam_policy_attachment" "main" {
+  name       = "cloudtrail-cloudwatch-logs-policy-attachment"
+  policy_arn = aws_iam_policy.cloudtrail_cloudwatch_logs.arn
+  roles      = [aws_iam_role.cloudtrail_cloudwatch_role.name]
+}
+
+resource "aws_kms_key" "cloudtrail" {
+  description             = "A KMS key used to encrypt CloudTrail log files stored in S3."
+  deletion_window_in_days = var.key_deletion_window_in_days
+  enable_key_rotation     = "true"
+  policy                  = data.aws_iam_policy_document.kms.json
+  tags                    = module.labels.tags
+}
+
+data "aws_iam_policy_document" "kms" {
+  version = "2012-10-17"
+  statement {
+    sid    = "Enable IAM User Permissions"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    actions   = ["kms:*"]
+    resources = ["*"]
+  }
+  statement {
+    sid    = "Allow CloudTrail to encrypt logs"
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
+    }
+    actions   = ["kms:GenerateDataKey*"]
+    resources = ["*"]
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:cloudtrail:arn"
+      values   = ["arn:${data.aws_partition.current.partition}:cloudtrail:*:${data.aws_caller_identity.current.account_id}:trail/*"]
+    }
+  }
+
+  statement {
+    sid    = "Allow CloudTrail to describe key"
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["cloudtrail.amazonaws.com"]
+    }
+    actions   = ["kms:DescribeKey"]
+    resources = ["*"]
+  }
+
+  statement {
+    sid    = "Allow principals in the account to decrypt log files"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    actions = [
+      "kms:Decrypt",
+      "kms:ReEncryptFrom"
+    ]
+    resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "kms:CallerAccount"
+      values   = [data.aws_caller_identity.current.account_id]
+    }
+    condition {
+      test     = "StringLike"
+      variable = "kms:EncryptionContext:aws:cloudtrail:arn"
+      values   = ["arn:${data.aws_partition.current.partition}:cloudtrail:*:${data.aws_caller_identity.current.account_id}:trail/*"]
+    }
+  }
+
+  statement {
+    sid    = "Allow alias creation during setup"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    actions   = ["kms:CreateAlias"]
+    resources = ["*"]
   }
 }

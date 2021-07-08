@@ -148,3 +148,27 @@ variable "sns_topic_name" {
   default     = null
   description = "Specifies the name of the Amazon SNS topic defined for notification of log file delivery."
 }
+
+variable "key_deletion_window_in_days" {
+  description = "Duration in days after which the key is deleted after destruction of the resource, must be 7-30 days.  Default 30 days."
+  default     = 30
+  type        = string
+}
+
+variable "log_retention_days" {
+  description = "Number of days to keep AWS logs around in specific log group."
+  default     = 90
+  type        = string
+}
+
+variable "cloudwatch_log_group_name" {
+  description = "The name of the CloudWatch Log Group that receives CloudTrail events."
+  default     = "cloudtrail-events"
+  type        = string
+}
+
+variable "iam_role_name" {
+  description = "Name for the CloudTrail IAM role"
+  default     = "cloudtrail-cloudwatch-logs-role"
+  type        = string
+}

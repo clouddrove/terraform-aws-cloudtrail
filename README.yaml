@@ -49,6 +49,6 @@ usage: |-
         enable_log_file_validation    = true
         include_global_service_events = true
         is_multi_region_trail         = false
-        kms_key_id                    = "arn:aws:kms:eu-west-1:xxxxxxxxx:key/xxxxxx-xxxx-xxxx-xxxxx"
+        log_retention_days            = 90
       }
   ```
