@@ -16,7 +16,7 @@ github_repo: clouddrove/terraform-aws-cloudtrail
 # Badges to display
 badges:
   - name: "Terraform"
-    image: "https://img.shields.io/badge/terraform-v0.14-green"
+    image: "https://img.shields.io/badge/terraform-v0.15-green"
     url: "https://www.terraform.io"
   - name: "Licence"
     image: "https://img.shields.io/badge/License-MIT-blue.svg"
@@ -39,10 +39,9 @@ usage: |-
   ```hcl
       module "cloudtrail" {
         source                        = "clouddrove/cloudtrail/aws"
-        version                       = "0.13.0"
+        version                       = "0.15.0"
 
         name                          = "cloudtrail"
-        repository                    = "https://registry.terraform.io/modules/clouddrove/cloudtrail/aws/latest"
         environment                   = "security"
         label_order                   = ["name", "environment"]
         s3_bucket_name                = "s3-logs"
@@ -50,6 +49,6 @@ usage: |-
         enable_log_file_validation    = true
         include_global_service_events = true
         is_multi_region_trail         = false
-        kms_key_id                    = "arn:aws:kms:eu-west-1:xxxxxxxxx:key/xxxxxx-xxxx-xxxx-xxxxx"
+        log_retention_days            = 90
       }
   ```
