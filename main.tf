@@ -31,7 +31,7 @@ resource "aws_cloudtrail" "default" {
   is_multi_region_trail         = true
   include_global_service_events = var.include_global_service_events
   cloud_watch_logs_role_arn     = var.cloud_watch_logs_role_arn != "" ? var.cloud_watch_logs_role_arn : aws_iam_role.cloudtrail_cloudwatch_role[0].arn
-  cloud_watch_logs_group_arn    = var.cloud_watch_logs_group_arn
+  cloud_watch_logs_group_arn    = var.cloud_watch_logs_group_arn != "" ? var.cloud_watch_logs_group_arn : "${aws_cloudwatch_log_group.cloudtrail[0].arn}:*"
   kms_key_id                    = aws_kms_key.cloudtrail.arn
   is_organization_trail         = var.is_organization_trail
   tags                          = module.labels.tags
@@ -81,6 +81,7 @@ resource "aws_iam_role" "cloudtrail_cloudwatch_role" {
   assume_role_policy = data.aws_iam_policy_document.cloudtrail_assume_role.json
 }
 resource "aws_cloudwatch_log_group" "cloudtrail" {
+  count             = var.cloud_watch_logs_group_arn == "" ? 1 : 0
   name              = var.cloudwatch_log_group_name
   retention_in_days = var.log_retention_days
   kms_key_id        = aws_kms_key.cloudtrail.arn
