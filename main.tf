@@ -30,7 +30,7 @@ resource "aws_cloudtrail" "default" {
   enable_log_file_validation    = var.enable_log_file_validation
   is_multi_region_trail         = true
   include_global_service_events = var.include_global_service_events
-  cloud_watch_logs_role_arn     = var.cloud_watch_logs_role_arn
+  cloud_watch_logs_role_arn     = var.cloud_watch_logs_role_arn != "" ? var.cloud_watch_logs_role_arn : aws_iam_role.cloudtrail_cloudwatch_role[0].arn
   cloud_watch_logs_group_arn    = var.cloud_watch_logs_group_arn
   kms_key_id                    = aws_kms_key.cloudtrail.arn
   is_organization_trail         = var.is_organization_trail
@@ -76,6 +76,7 @@ data "aws_iam_policy_document" "cloudtrail_assume_role" {
 }
 # This role is used by CloudTrail to send logs to CloudWatch.
 resource "aws_iam_role" "cloudtrail_cloudwatch_role" {
+  count              = var.cloud_watch_logs_role_arn == "" ? 1 : 0
   name               = var.iam_role_name
   assume_role_policy = data.aws_iam_policy_document.cloudtrail_assume_role.json
 }
@@ -85,6 +86,7 @@ resource "aws_cloudwatch_log_group" "cloudtrail" {
   kms_key_id        = aws_kms_key.cloudtrail.arn
 }
 data "aws_iam_policy_document" "cloudtrail_cloudwatch_logs" {
+  count = var.cloud_watch_logs_role_arn == "" ? 1 : 0
   statement {
     sid = "WriteCloudWatchLogs"
 
@@ -95,17 +97,19 @@ data "aws_iam_policy_document" "cloudtrail_cloudwatch_logs" {
       "logs:PutLogEvents",
     ]
 
-    resources = ["arn:${data.aws_partition.current.partition}:logs:eu-west-1:${data.aws_caller_identity.current.account_id}:log-group:cloudwatch-log-group:*"]
+    resources = ["${aws_cloudwatch_log_group.cloudtrail[0].arn}:*"]
   }
 }
 resource "aws_iam_policy" "cloudtrail_cloudwatch_logs" {
+  count  = var.cloud_watch_logs_role_arn == "" ? 1 : 0
   name   = "cloudtrail-cloudwatch-logs-policy"
-  policy = data.aws_iam_policy_document.cloudtrail_cloudwatch_logs.json
+  policy = data.aws_iam_policy_document.cloudtrail_cloudwatch_logs[0].json
 }
 resource "aws_iam_policy_attachment" "main" {
+  count      = var.cloud_watch_logs_role_arn == "" ? 1 : 0
   name       = "cloudtrail-cloudwatch-logs-policy-attachment"
-  policy_arn = aws_iam_policy.cloudtrail_cloudwatch_logs.arn
-  roles      = [aws_iam_role.cloudtrail_cloudwatch_role.name]
+  policy_arn = aws_iam_policy.cloudtrail_cloudwatch_logs[0].arn
+  roles      = [aws_iam_role.cloudtrail_cloudwatch_role[0].name]
 }
 
 resource "aws_kms_key" "cloudtrail" {
