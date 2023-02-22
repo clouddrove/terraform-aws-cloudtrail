@@ -79,7 +79,7 @@ Here is an example of how you can use this module in your inventory structure:
 ```hcl
     module "cloudtrail" {
       source                        = "clouddrove/cloudtrail/aws"
-      version                       = "1.0.1"
+      version                       = "1.3.0"
 
       name                          = "cloudtrail"
       environment                   = "security"
