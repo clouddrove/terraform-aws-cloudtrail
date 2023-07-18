@@ -28,14 +28,15 @@ resource "aws_cloudtrail" "default" {
   enable_logging                = var.enable_logging
   s3_bucket_name                = var.s3_bucket_name
   enable_log_file_validation    = var.enable_log_file_validation
-  is_multi_region_trail         = true
+  is_multi_region_trail         = var.is_multi_region_trail
   include_global_service_events = var.include_global_service_events
   cloud_watch_logs_role_arn     = var.cloud_watch_logs_role_arn
   cloud_watch_logs_group_arn    = var.cloud_watch_logs_group_arn
-  kms_key_id                    = aws_kms_key.cloudtrail.arn
+  kms_key_id                    = join("", aws_kms_key.cloudtrail.*.arn) # aws_kms_key.cloudtrail[0].arn != null ? aws_kms_key.cloudtrail[0].arn : null
   is_organization_trail         = var.is_organization_trail
   tags                          = module.labels.tags
   sns_topic_name                = var.sns_topic_name
+
   dynamic "event_selector" {
     for_each = var.event_selector ? [true] : []
     content {
@@ -50,9 +51,18 @@ resource "aws_cloudtrail" "default" {
       }
     }
   }
+
+  dynamic "insight_selector" {
+    for_each = var.insight_selector
+    content {
+      insight_type = insight_selector.value.insight_type
+    }
+  }
+
   lifecycle {
     ignore_changes = [event_selector]
   }
+
   depends_on = [
     aws_kms_key.cloudtrail,
   ]
@@ -76,14 +86,19 @@ data "aws_iam_policy_document" "cloudtrail_assume_role" {
 }
 # This role is used by CloudTrail to send logs to CloudWatch.
 resource "aws_iam_role" "cloudtrail_cloudwatch_role" {
+  count              = var.enable_cloudwatch && var.enabled_cloudtrail ? 1 : 0
   name               = var.iam_role_name
   assume_role_policy = data.aws_iam_policy_document.cloudtrail_assume_role.json
 }
 resource "aws_cloudwatch_log_group" "cloudtrail" {
+  count             = var.enable_cloudwatch && var.enabled_cloudtrail ? 1 : 0
   name              = var.cloudwatch_log_group_name
   retention_in_days = var.log_retention_days
-  kms_key_id        = aws_kms_key.cloudtrail.arn
+  kms_key_id        = join("", aws_kms_key.cloudtrail.*.arn)
 }
+
+data "aws_region" "current" {}
+
 data "aws_iam_policy_document" "cloudtrail_cloudwatch_logs" {
   statement {
     sid = "WriteCloudWatchLogs"
@@ -94,21 +109,25 @@ data "aws_iam_policy_document" "cloudtrail_cloudwatch_logs" {
       "logs:CreateLogStream",
       "logs:PutLogEvents",
     ]
-     #tfsec:ignore:aws-iam-no-policy-wildcards
-    resources = ["arn:${data.aws_partition.current.partition}:logs:eu-west-1:${data.aws_caller_identity.current.account_id}:log-group:cloudwatch-log-group:*"]
+    #tfsec:ignore:aws-iam-no-policy-wildcards
+    resources = ["arn:${data.aws_partition.current.partition}:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:cloudwatch-log-group:*"]
   }
 }
 resource "aws_iam_policy" "cloudtrail_cloudwatch_logs" {
+  count  = var.enable_cloudwatch && var.enabled_cloudtrail ? 1 : 0
   name   = "cloudtrail-cloudwatch-logs-policy"
   policy = data.aws_iam_policy_document.cloudtrail_cloudwatch_logs.json
 }
 resource "aws_iam_policy_attachment" "main" {
+  count      = var.enable_cloudwatch && var.enabled_cloudtrail ? 1 : 0
   name       = "cloudtrail-cloudwatch-logs-policy-attachment"
-  policy_arn = aws_iam_policy.cloudtrail_cloudwatch_logs.arn
-  roles      = [aws_iam_role.cloudtrail_cloudwatch_role.name]
+  policy_arn = aws_iam_policy.cloudtrail_cloudwatch_logs[0].arn
+  roles      = [aws_iam_role.cloudtrail_cloudwatch_role[0].name]
 }
 
+## Supports only for single account cloudtrail.
 resource "aws_kms_key" "cloudtrail" {
+  count                   = var.kms_enabled && var.enabled_cloudtrail ? 1 : 0
   description             = "A KMS key used to encrypt CloudTrail log files stored in S3."
   deletion_window_in_days = var.key_deletion_window_in_days
   enable_key_rotation     = "true"

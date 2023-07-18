@@ -4,14 +4,18 @@ provider "aws" {
 
 data "aws_caller_identity" "current" {}
 
+locals {
+  environment = "security"
+  bucket_name = "bucket-logs-${local.environment}"
+}
 
 module "s3_logs" {
   source  = "clouddrove/s3/aws"
   version = "1.3.0"
 
-  name                         = "bucket-logs"
-  environment                  = "security"
-  label_order                  = ["name", "environment"]
+  name                         = local.bucket_name
+  environment                  = local.environment
+  label_order                  = ["name"]
   versioning                   = true
   acl                          = "log-delivery-write"
   bucket_policy                = true
@@ -21,8 +25,6 @@ module "s3_logs" {
   force_destroy                = true
 }
 
-
-
 module "cloudtrail" {
   source = "../"
 
@@ -30,15 +32,10 @@ module "cloudtrail" {
   environment                   = "security"
   label_order                   = ["name", "environment"]
   s3_bucket_name                = module.s3_logs.id
-  enable_logging                = true
-  enable_log_file_validation    = true
   include_global_service_events = true
   is_organization_trail         = false
   log_retention_days            = 90
-
 }
-
-
 
 data "aws_iam_policy_document" "default" {
   statement {
@@ -49,7 +46,7 @@ data "aws_iam_policy_document" "default" {
       identifiers = ["cloudtrail.amazonaws.com"]
     }
     actions   = ["s3:GetBucketAcl"]
-    resources = ["arn:aws:s3:::bucket-logs-security"]
+    resources = ["arn:aws:s3:::${local.bucket_name}"]
   }
 
   statement {
@@ -60,7 +57,7 @@ data "aws_iam_policy_document" "default" {
       identifiers = ["cloudtrail.amazonaws.com"]
     }
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::bucket-logs-security/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
+    resources = ["arn:aws:s3:::${local.bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
