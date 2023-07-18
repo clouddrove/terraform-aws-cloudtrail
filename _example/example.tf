@@ -6,7 +6,7 @@ data "aws_caller_identity" "current" {}
 
 locals {
   environment = "security"
-  bucket_name = "bucket-logs-${local.environment}"
+  bucket_name = "bucket-logs"
 }
 
 module "s3_logs" {
