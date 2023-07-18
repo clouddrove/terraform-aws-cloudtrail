@@ -15,7 +15,7 @@ module "s3_logs" {
 
   name                         = local.bucket_name
   environment                  = local.environment
-  label_order                  = ["name"]
+  label_order                  = ["name", "environment"]
   versioning                   = true
   acl                          = "log-delivery-write"
   bucket_policy                = true
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "default" {
       identifiers = ["cloudtrail.amazonaws.com"]
     }
     actions   = ["s3:GetBucketAcl"]
-    resources = ["arn:aws:s3:::${local.bucket_name}"]
+    resources = ["arn:aws:s3:::${module.s3_logs.id}"]
   }
 
   statement {
@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "default" {
       identifiers = ["cloudtrail.amazonaws.com"]
     }
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::${local.bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
+    resources = ["arn:aws:s3:::${module.s3_logs.id}/AWSLogs/*"]
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"
