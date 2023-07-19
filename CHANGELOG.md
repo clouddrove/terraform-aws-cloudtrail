@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2023-07-19
+### :sparkles: New Features
+- [`fbdd962`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/fbdd962bdd32cb3e9c585bcf6a40ec45bebb0da5) - add changelog.yml file and use shared-workflows *(commit by [@theprashantyadav](https://github.com/theprashantyadav))*
+- [`c3bc36c`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/c3bc36cea431a02087b7d5de12465b90319b72bc) - added dependabot.yml *(commit by [@theprashantyadav](https://github.com/theprashantyadav))*
+- [`74a9932`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/74a993255238361fb61421e83e6467dae0c483ca) - auto changelog action added *(commit by [@theprashantyadav](https://github.com/theprashantyadav))*
+- [`31ec785`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/31ec78548ae4b2e4e1f849b4f5effc716b846b24) - add deepsource & added assignees,reviewer in dependabot *(commit by [@Tanveer143s](https://github.com/Tanveer143s))*
+- [`4da6474`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/4da64740536f8d1ff21be39cb7f5f3f933df9dfa) - dynamic values and fixed main file *(commit by [@anmolnagpal](https://github.com/anmolnagpal))*
+
+### :bug: Bug Fixes
+- [`a2a5a9b`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/a2a5a9bf615061fd9f2956efd5c96fc55ad0b9d5) - update s3 for label and data for name *(commit by [@nileshgadgi](https://github.com/nileshgadgi))*
+- [`dd0c134`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/dd0c134f492d98e744144e205906483d29165e00) - update local variables *(commit by [@nileshgadgi](https://github.com/nileshgadgi))*
+- [`3730c0f`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/3730c0f63aec0078a8521cadebc8f7f9ba5f7667) - pass direct value in name and env of bucket in examlpe *(commit by [@nileshgadgi](https://github.com/nileshgadgi))*
+
+
 ## [1.3.0] - 2022-02-22
 ### :bug: Bug Fixes
 - [`66ed839`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/66ed839f98b3743b89561e530a85ae7aa89e328c) - update README.md .
@@ -118,3 +132,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.15.0]: https://github.com/clouddrove/terraform-aws-cloudtrail/compare/0.15.0...master
 [1.0.1]: https://github.com/clouddrove/terraform-aws-cloudtrail/compare/1.0.1...master
 [1.3.0]:  https://github.com/clouddrove/terraform-aws-cloudtrail/releases/tag/1.3.0
+[1.4.0]: https://github.com/clouddrove/terraform-aws-cloudtrail/compare/1.3.0...1.4.0
