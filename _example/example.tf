@@ -4,7 +4,6 @@ provider "aws" {
 
 data "aws_caller_identity" "current" {}
 
-
 module "s3_logs" {
   source  = "clouddrove/s3/aws"
   version = "1.3.0"
@@ -21,8 +20,6 @@ module "s3_logs" {
   force_destroy                = true
 }
 
-
-
 module "cloudtrail" {
   source = "../"
 
@@ -30,15 +27,10 @@ module "cloudtrail" {
   environment                   = "security"
   label_order                   = ["name", "environment"]
   s3_bucket_name                = module.s3_logs.id
-  enable_logging                = true
-  enable_log_file_validation    = true
   include_global_service_events = true
   is_organization_trail         = false
   log_retention_days            = 90
-
 }
-
-
 
 data "aws_iam_policy_document" "default" {
   statement {
@@ -49,7 +41,7 @@ data "aws_iam_policy_document" "default" {
       identifiers = ["cloudtrail.amazonaws.com"]
     }
     actions   = ["s3:GetBucketAcl"]
-    resources = ["arn:aws:s3:::bucket-logs-security"]
+    resources = ["arn:aws:s3:::${module.s3_logs.id}"]
   }
 
   statement {
@@ -60,7 +52,7 @@ data "aws_iam_policy_document" "default" {
       identifiers = ["cloudtrail.amazonaws.com"]
     }
     actions   = ["s3:PutObject"]
-    resources = ["arn:aws:s3:::bucket-logs-security/AWSLogs/${data.aws_caller_identity.current.account_id}/*"]
+    resources = ["arn:aws:s3:::${module.s3_logs.id}/AWSLogs/*"]
     condition {
       test     = "StringEquals"
       variable = "s3:x-amz-acl"

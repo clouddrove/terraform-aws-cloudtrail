@@ -50,6 +50,18 @@ variable "enabled_cloudtrail" {
   description = "If true, deploy the resources for the module."
 }
 
+variable "enable_cloudwatch" {
+  type        = bool
+  default     = true
+  description = "If true, deploy the resources for cloudwatch in the module."
+}
+
+variable "kms_enabled" {
+  type        = bool
+  default     = false
+  description = "If true, deploy the resources for kms in the module. Note: Supports in only single cloudtrail management."
+}
+
 variable "enable_log_file_validation" {
   type        = bool
   default     = true
@@ -171,4 +183,19 @@ variable "iam_role_name" {
   description = "Name for the CloudTrail IAM role"
   default     = "cloudtrail-cloudwatch-logs-role"
   type        = string
+}
+
+variable "insight_selector" {
+  type = list(object({
+    insight_type = string
+  }))
+
+  description = "Specifies an insight selector for type of insights to log on a trail"
+  default     = []
+}
+
+variable "is_multi_region_trail" {
+  type        = bool
+  default     = false
+  description = "Specifies whether the trail is created in the current region or in all regions"
 }
