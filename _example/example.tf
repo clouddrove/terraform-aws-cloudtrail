@@ -4,17 +4,12 @@ provider "aws" {
 
 data "aws_caller_identity" "current" {}
 
-locals {
-  environment = "security"
-  bucket_name = "bucket-logs"
-}
-
 module "s3_logs" {
   source  = "clouddrove/s3/aws"
   version = "1.3.0"
 
-  name                         = local.bucket_name
-  environment                  = local.environment
+  name                         = "bucket-logs"
+  environment                  = "security"
   label_order                  = ["name", "environment"]
   versioning                   = true
   acl                          = "log-delivery-write"
