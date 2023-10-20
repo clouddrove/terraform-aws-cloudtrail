@@ -76,6 +76,7 @@ variable "enable_logging" {
 
 variable "s3_bucket_name" {
   type        = string
+  default     = ""
   description = "S3 bucket name for CloudTrail log."
 }
 
