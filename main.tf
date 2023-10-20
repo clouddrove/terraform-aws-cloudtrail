@@ -32,7 +32,7 @@ resource "aws_cloudtrail" "default" {
   include_global_service_events = var.include_global_service_events
   cloud_watch_logs_role_arn     = var.cloud_watch_logs_role_arn
   cloud_watch_logs_group_arn    = var.cloud_watch_logs_group_arn
-  kms_key_id                    = join("", aws_kms_key.cloudtrail.*.arn) # aws_kms_key.cloudtrail[0].arn != null ? aws_kms_key.cloudtrail[0].arn : null
+  kms_key_id                    = join("", aws_kms_key.cloudtrail[*].arn) # aws_kms_key.cloudtrail[0].arn != null ? aws_kms_key.cloudtrail[0].arn : null
   is_organization_trail         = var.is_organization_trail
   tags                          = module.labels.tags
   sns_topic_name                = var.sns_topic_name
@@ -94,7 +94,7 @@ resource "aws_cloudwatch_log_group" "cloudtrail" {
   count             = var.enable_cloudwatch && var.enabled_cloudtrail ? 1 : 0
   name              = var.cloudwatch_log_group_name
   retention_in_days = var.log_retention_days
-  kms_key_id        = join("", aws_kms_key.cloudtrail.*.arn)
+  kms_key_id        = join("", aws_kms_key.cloudtrail[*].arn)
 }
 
 data "aws_region" "current" {}
