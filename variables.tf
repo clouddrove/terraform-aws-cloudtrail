@@ -20,7 +20,7 @@ variable "environment" {
 
 variable "label_order" {
   type        = list(any)
-  default     = []
+  default     = ["name", "environment"]
   description = "Label order, e.g. `name`,`application`."
 }
 
@@ -28,12 +28,6 @@ variable "attributes" {
   type        = list(string)
   default     = []
   description = "Additional attributes (e.g. `1`)."
-}
-
-variable "tags" {
-  type        = map(string)
-  default     = {}
-  description = "Additional tags (e.g. map(`BusinessUnit`,`XYZ`)."
 }
 
 variable "managedby" {
@@ -82,6 +76,7 @@ variable "enable_logging" {
 
 variable "s3_bucket_name" {
   type        = string
+  default     = ""
   description = "S3 bucket name for CloudTrail log."
 }
 
@@ -117,12 +112,6 @@ variable "include_management_events" {
   description = " Specify if you want your event selector to include management events for your trail."
 }
 
-variable "data_resource" {
-  type        = bool
-  default     = true
-  description = " Specify if you want your event selector to include management events for your trail."
-}
-
 variable "event_selector_data_resource" {
   type        = bool
   default     = false
@@ -139,13 +128,6 @@ variable "data_resource_values" {
   type        = list(string)
   default     = []
   description = "Specifies an event selector for enabling data event logging, It needs to be a list of map values. See: https://www.terraform.io/docs/providers/aws/r/cloudtrail.html for details on this map variable."
-  sensitive   = true
-}
-
-variable "kms_key_id" {
-  type        = string
-  default     = ""
-  description = "Specifies the KMS key ARN to use to encrypt the logs delivered by CloudTrail."
   sensitive   = true
 }
 
