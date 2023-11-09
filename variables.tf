@@ -80,6 +80,12 @@ variable "s3_bucket_name" {
   description = "S3 bucket name for CloudTrail log."
 }
 
+variable "s3_key_prefix" {
+  type        = string
+  default     = ""
+  description = "(Optional) S3 key prefix that follows the name of the bucket you have designated for log file delivery."
+}
+
 variable "cloud_watch_logs_role_arn" {
   type        = string
   default     = ""
