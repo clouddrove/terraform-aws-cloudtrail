@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2024-05-16
+### :sparkles: New Features
+- [`4c69281`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/4c692814d16d40a1829dd5db1fdd28da34def1e1) - s3_key_prefix attribute for cloudtrail *(PR [#26](https://github.com/clouddrove/terraform-aws-cloudtrail/pull/26) by [@h1manshu98](https://github.com/h1manshu98))*
+- [`96d1337`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/96d13371e40d6c2c1bc6c500362feed7e0b8216e) - Add automerge github shared workflow *(PR [#27](https://github.com/clouddrove/terraform-aws-cloudtrail/pull/27) by [@vaibhav7797](https://github.com/vaibhav7797))*
+- [`2ba5e13`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/2ba5e1369129ee8f999b6b4650ca42a2a0053df3) - updated example path and readme paramters *(commit by [@VishwajitNagulkar](https://github.com/VishwajitNagulkar))*
+
+### :bug: Bug Fixes
+- [`6ab6f6f`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/6ab6f6f9a8d1a460c7b197c1d79c5ca8f11629ea) - fixed cloudtrail log group creation issue *(PR [#30](https://github.com/clouddrove/terraform-aws-cloudtrail/pull/30) by [@nileshgadgi](https://github.com/nileshgadgi))*
+
+### :memo: Documentation Changes
+- [`6d45226`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/6d452269e154aaef69987ac9fa16ec085c4eb741) - update CHANGELOG.md for 1.4.0 *(commit by [@clouddrove-ci](https://github.com/clouddrove-ci))*
+
+
 ## [1.4.0] - 2023-07-19
 ### :sparkles: New Features
 - [`fbdd962`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/fbdd962bdd32cb3e9c585bcf6a40ec45bebb0da5) - add changelog.yml file and use shared-workflows *(commit by [@theprashantyadav](https://github.com/theprashantyadav))*
@@ -133,3 +146,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0.1]: https://github.com/clouddrove/terraform-aws-cloudtrail/compare/1.0.1...master
 [1.3.0]:  https://github.com/clouddrove/terraform-aws-cloudtrail/releases/tag/1.3.0
 [1.4.0]: https://github.com/clouddrove/terraform-aws-cloudtrail/compare/1.3.0...1.4.0
+[1.4.1]: https://github.com/clouddrove/terraform-aws-cloudtrail/compare/1.4.0...1.4.1
