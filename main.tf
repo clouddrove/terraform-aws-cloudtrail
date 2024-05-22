@@ -32,7 +32,7 @@ resource "aws_cloudtrail" "default" {
   is_multi_region_trail         = var.is_multi_region_trail
   include_global_service_events = var.include_global_service_events
   cloud_watch_logs_role_arn     = var.cloud_watch_logs_role_arn
-  cloud_watch_logs_group_arn    = format("%s:*", var.cloud_watch_logs_group_arn)
+  cloud_watch_logs_group_arn    = var.cloud_watch_logs_group_arn != "" ? format("%s:*", var.cloud_watch_logs_group_arn) : ""
   kms_key_id                    = join("", aws_kms_key.cloudtrail[*].arn) # aws_kms_key.cloudtrail[0].arn != null ? aws_kms_key.cloudtrail[0].arn : null
   is_organization_trail         = var.is_organization_trail
   tags                          = module.labels.tags
