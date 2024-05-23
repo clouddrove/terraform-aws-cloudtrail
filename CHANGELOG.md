@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.2] - 2024-05-23
+### :memo: Documentation Changes
+- [`6fc2afe`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/6fc2afee30e219d18040c446a54803d00b0d6ff9) - update CHANGELOG.md for 1.4.1 *(commit by [@clouddrove-ci](https://github.com/clouddrove-ci))*
+
+
 ## [1.4.1] - 2024-05-16
 ### :sparkles: New Features
 - [`4c69281`](https://github.com/clouddrove/terraform-aws-cloudtrail/commit/4c692814d16d40a1829dd5db1fdd28da34def1e1) - s3_key_prefix attribute for cloudtrail *(PR [#26](https://github.com/clouddrove/terraform-aws-cloudtrail/pull/26) by [@h1manshu98](https://github.com/h1manshu98))*
@@ -147,3 +152,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.3.0]:  https://github.com/clouddrove/terraform-aws-cloudtrail/releases/tag/1.3.0
 [1.4.0]: https://github.com/clouddrove/terraform-aws-cloudtrail/compare/1.3.0...1.4.0
 [1.4.1]: https://github.com/clouddrove/terraform-aws-cloudtrail/compare/1.4.0...1.4.1
+[1.4.2]: https://github.com/clouddrove/terraform-aws-cloudtrail/compare/1.4.1...1.4.2
