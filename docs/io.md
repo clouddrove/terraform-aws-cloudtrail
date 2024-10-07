@@ -41,4 +41,3 @@
 | home\_region | The region in which the trail was created. |
 | id | The name of the trail. |
 | tags | A mapping of tags to assign to the resource. |
-
