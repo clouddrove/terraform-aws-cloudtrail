@@ -1,189 +1,194 @@
-#Module      : LABEL
-#Description : Terraform label module variables.
 variable "name" {
+  description = "Name of the resource."
   type        = string
-  description = "Name  (e.g. `app` or `cluster`)."
 }
 
 variable "repository" {
+  description = "Repository name where this module is used."
   type        = string
-  default     = "https://github.com/clouddrove/terraform-aws-cloudtrail"
-  description = "Terraform current module repo"
 }
-
 
 variable "environment" {
+  description = "Environment (e.g. dev, prod, staging)."
   type        = string
-  default     = ""
-  description = "Environment (e.g. `prod`, `dev`, `staging`)."
-}
-
-variable "label_order" {
-  type        = list(any)
-  default     = ["name", "environment"]
-  description = "Label order, e.g. `name`,`application`."
-}
-
-variable "attributes" {
-  type        = list(string)
-  default     = []
-  description = "Additional attributes (e.g. `1`)."
 }
 
 variable "managedby" {
+  description = "Team responsible for this resource."
   type        = string
-  default     = "hello@clouddrove.com"
-  description = "ManagedBy, eg 'CloudDrove'."
 }
 
-#Module      : CLOUDTRAIL
-#Description : Terraform VPC module variables.
+variable "attributes" {
+  description = "List of attributes to add to the name."
+  type        = list(string)
+  default     = []
+}
+
+variable "label_order" {
+  description = "Label order."
+  type        = list(string)
+  default     = ["name", "environment"]
+}
+
+# CloudTrail-specific variables
 variable "enabled_cloudtrail" {
+  description = "Enable CloudTrail."
   type        = bool
   default     = true
-  description = "If true, deploy the resources for the module."
-}
-
-variable "enable_cloudwatch" {
-  type        = bool
-  default     = true
-  description = "If true, deploy the resources for cloudwatch in the module."
-}
-
-variable "kms_enabled" {
-  type        = bool
-  default     = false
-  description = "If true, deploy the resources for kms in the module. Note: Supports in only single cloudtrail management."
-}
-
-variable "enable_log_file_validation" {
-  type        = bool
-  default     = true
-  description = "Specifies whether log file integrity validation is enabled. Creates signed digest for validated contents of logs."
-}
-
-variable "include_global_service_events" {
-  type        = bool
-  default     = true
-  description = "Specifies whether the trail is publishing events from global services such as IAM to the log files."
 }
 
 variable "enable_logging" {
+  description = "Enable logging for the CloudTrail."
   type        = bool
   default     = true
-  description = "Enable logging for the trail."
 }
 
-variable "s3_bucket_name" {
-  type        = string
-  default     = ""
-  description = "S3 bucket name for CloudTrail log."
-}
-
-variable "s3_key_prefix" {
-  type        = string
-  default     = ""
-  description = "(Optional) S3 key prefix that follows the name of the bucket you have designated for log file delivery."
-}
-
-variable "cloud_watch_logs_role_arn" {
-  type        = string
-  default     = ""
-  description = "Specifies the role for the CloudWatch Logs endpoint to assume to write to a user’s log group."
-  sensitive   = true
-}
-
-variable "cloud_watch_logs_group_arn" {
-  type        = string
-  default     = ""
-  description = "Specifies a log group name using an Amazon Resource Name (ARN), that represents the log group to which CloudTrail logs will be delivered."
-  sensitive   = true
-}
-
-variable "event_selector" {
+variable "enable_log_file_validation" {
+  description = "Enable log file validation for the trail."
   type        = bool
   default     = true
-  description = "Specifies an event selector for enabling data event logging. Fields documented below. Please note the CloudTrail limits when configuring these."
-}
-
-variable "read_write_type" {
-  type        = string
-  default     = "All"
-  description = "Specify if you want your trail to log read-only events, write-only events, or all. By default, the value is All."
-}
-
-variable "include_management_events" {
-  type        = bool
-  default     = true
-  description = " Specify if you want your event selector to include management events for your trail."
-}
-
-variable "event_selector_data_resource" {
-  type        = bool
-  default     = false
-  description = "Specifies logging data events. Fields documented below."
-}
-
-variable "data_resource_type" {
-  type        = string
-  default     = "AWS::S3::Object"
-  description = "The resource type in which you want to log data events. You can specify only the following value: `AWS::S3::Object` `AWS::Lambda::Function`."
-}
-
-variable "data_resource_values" {
-  type        = list(string)
-  default     = []
-  description = "Specifies an event selector for enabling data event logging, It needs to be a list of map values. See: https://www.terraform.io/docs/providers/aws/r/cloudtrail.html for details on this map variable."
-  sensitive   = true
-}
-
-variable "is_organization_trail" {
-  type        = bool
-  default     = false
-  description = "The trail is an AWS Organizations trail."
-}
-
-variable "sns_topic_name" {
-  type        = string
-  default     = null
-  description = "Specifies the name of the Amazon SNS topic defined for notification of log file delivery."
-}
-
-variable "key_deletion_window_in_days" {
-  description = "Duration in days after which the key is deleted after destruction of the resource, must be 7-30 days.  Default 30 days."
-  default     = 30
-  type        = string
-}
-
-variable "log_retention_days" {
-  description = "Number of days to keep AWS logs around in specific log group."
-  default     = 90
-  type        = string
-}
-
-variable "cloudwatch_log_group_name" {
-  description = "The name of the CloudWatch Log Group that receives CloudTrail events."
-  default     = "cloudtrail-events"
-  type        = string
-}
-
-variable "iam_role_name" {
-  description = "Name for the CloudTrail IAM role"
-  default     = "cloudtrail-cloudwatch-logs-role"
-  type        = string
-}
-
-variable "insight_selector" {
-  type = list(object({
-    insight_type = string
-  }))
-
-  description = "Specifies an insight selector for type of insights to log on a trail"
-  default     = []
 }
 
 variable "is_multi_region_trail" {
+  description = "Whether the trail is multi-region."
+  type        = bool
+  default     = true
+}
+
+variable "include_global_service_events" {
+  description = "Include global service events in the trail."
+  type        = bool
+  default     = true
+}
+
+variable "is_organization_trail" {
+  description = "Whether the trail is for an organization."
   type        = bool
   default     = false
-  description = "Specifies whether the trail is created in the current region or in all regions"
+}
+
+variable "s3_bucket_name" {
+  description = "S3 bucket name for CloudTrail logs."
+  type        = string
+}
+
+variable "s3_key_prefix" {
+  description = "S3 key prefix for CloudTrail logs."
+  type        = string
+  default     = ""
+}
+
+variable "create_s3_bucket" {
+  description = "Whether to create the S3 bucket or assume it exists."
+  type        = bool
+  default     = true
+}
+
+variable "cloud_watch_logs_role_arn" {
+  description = "The ARN of the IAM role that CloudTrail assumes to write to CloudWatch Logs."
+  type        = string
+  default     = ""
+}
+
+variable "cloud_watch_logs_group_arn" {
+  description = "The ARN of the CloudWatch Logs log group."
+  type        = string
+  default     = ""
+}
+
+variable "sns_topic_name" {
+  description = "Name of the SNS topic for CloudTrail notifications."
+  type        = string
+  default     = ""
+}
+
+# KMS
+variable "kms_enabled" {
+  description = "Enable KMS encryption for CloudTrail logs."
+  type        = bool
+  default     = true
+}
+
+variable "key_deletion_window_in_days" {
+  description = "Number of days before deleting the KMS key."
+  type        = number
+  default     = 30
+}
+
+# CloudWatch
+variable "enable_cloudwatch" {
+  description = "Enable CloudWatch logging for CloudTrail."
+  type        = bool
+  default     = true
+}
+
+variable "cloudwatch_log_group_name" {
+  description = "CloudWatch log group name."
+  type        = string
+  default     = "/aws/cloudtrail/logs"
+}
+
+variable "log_retention_days" {
+  description = "Retention in days for CloudWatch logs."
+  type        = number
+  default     = 90
+}
+
+# IAM Names
+variable "iam_role_name" {
+  description = "IAM role name for CloudTrail CloudWatch integration."
+  type        = string
+  default     = "cloudtrail-cloudwatch-logs-role"
+}
+
+variable "iam_policy_name" {
+  description = "IAM policy name for CloudWatch permissions."
+  type        = string
+  default     = "cloudtrail-cloudwatch-logs-policy"
+}
+
+# Insight selectors
+variable "insight_selector" {
+  description = "List of insight selectors to enable on the trail."
+  type = list(object({
+    insight_type = string
+  }))
+  default = []
+}
+
+# Advanced event selectors (optional)
+variable "event_selector" {
+  description = "Enable event selector for data events."
+  type        = bool
+  default     = false
+}
+
+variable "event_selector_data_resource" {
+  description = "Enable data resource configuration for event selector."
+  type        = bool
+  default     = false
+}
+
+variable "read_write_type" {
+  description = "Specifies whether to log read-only, write-only, or all events."
+  type        = string
+  default     = "All"
+}
+
+variable "include_management_events" {
+  description = "Include management events for event selector."
+  type        = bool
+  default     = true
+}
+
+variable "data_resource_type" {
+  description = "Type of data resource (e.g., AWS::S3::Object)."
+  type        = string
+  default     = "AWS::S3::Object"
+}
+
+variable "data_resource_values" {
+  description = "List of data resource ARNs to include in the event selector."
+  type        = list(string)
+  default     = []
 }
