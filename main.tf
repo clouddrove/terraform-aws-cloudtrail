@@ -91,12 +91,14 @@ resource "aws_iam_role" "cloudtrail_cloudwatch_role" {
   count              = var.enable_cloudwatch && var.enabled_cloudtrail ? 1 : 0
   name               = var.iam_role_name
   assume_role_policy = data.aws_iam_policy_document.cloudtrail_assume_role.json
+  tags = module.labels.tags
 }
 resource "aws_cloudwatch_log_group" "cloudtrail" {
   count             = var.enable_cloudwatch && var.enabled_cloudtrail ? 1 : 0
   name              = var.cloudwatch_log_group_name
   retention_in_days = var.log_retention_days
   kms_key_id        = join("", aws_kms_key.cloudtrail[*].arn)
+  tags = module.labels.tags
 }
 
 data "aws_region" "current" {}
@@ -119,6 +121,7 @@ resource "aws_iam_policy" "cloudtrail_cloudwatch_logs" {
   count  = var.enable_cloudwatch && var.enabled_cloudtrail ? 1 : 0
   name   = "cloudtrail-cloudwatch-logs-policy"
   policy = data.aws_iam_policy_document.cloudtrail_cloudwatch_logs.json
+  tags = module.labels.tags
 }
 resource "aws_iam_policy_attachment" "main" {
   count      = var.enable_cloudwatch && var.enabled_cloudtrail ? 1 : 0

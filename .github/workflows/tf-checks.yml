@@ -6,7 +6,7 @@ on:
   pull_request:
 jobs:
   tf-checks-example:
-    uses: clouddrove/github-shared-workflows/.github/workflows/tf-checks.yml@v2
+    uses: clouddrove/github-shared-workflows/.github/workflows/tf-checks.yml@master
     with:
       working_directory: './examples/'
       provider: aws
