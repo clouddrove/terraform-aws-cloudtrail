@@ -8,7 +8,7 @@ locals {
 }
 module "s3_logs" {
   source  = "clouddrove/s3/aws"
-  version = "2.0.0"
+  version = "2.0.1"
 
   name                    = "${local.name}-bucket-logs"
   environment             = local.environment
