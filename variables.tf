@@ -36,6 +36,12 @@ variable "managedby" {
   description = "ManagedBy, eg 'CloudDrove'."
 }
 
+variable "extra_tags" {
+  type        = map(string)
+  default     = {}
+  description = "Additional tags (e.g. map(`CostCenter`,`platform`))."
+}
+
 #Module      : CLOUDTRAIL
 #Description : Terraform VPC module variables.
 variable "enabled_cloudtrail" {
