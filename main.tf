@@ -111,7 +111,7 @@ data "aws_iam_policy_document" "cloudtrail_cloudwatch_logs" {
       "logs:PutLogEvents",
     ]
     #tfsec:ignore:aws-iam-no-policy-wildcards
-    resources = ["arn:${data.aws_partition.current.partition}:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:cloudwatch-log-group:*"]
+    resources = ["arn:${data.aws_partition.current.partition}:logs:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:log-group:cloudwatch-log-group:*"]
   }
 }
 resource "aws_iam_policy" "cloudtrail_cloudwatch_logs" {
