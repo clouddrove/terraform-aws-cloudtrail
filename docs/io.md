@@ -15,6 +15,7 @@
 | environment | Environment (e.g. `prod`, `dev`, `staging`). | `string` | `""` | no |
 | event\_selector | Specifies an event selector for enabling data event logging. Fields documented below. Please note the CloudTrail limits when configuring these. | `bool` | `true` | no |
 | event\_selector\_data\_resource | Specifies logging data events. Fields documented below. | `bool` | `false` | no |
+| extra\_tags | Additional tags (e.g. map(`CostCenter`,`platform`)). | `map(string)` | `{}` | no |
 | iam\_role\_name | Name for the CloudTrail IAM role | `string` | `"cloudtrail-cloudwatch-logs-role"` | no |
 | include\_global\_service\_events | Specifies whether the trail is publishing events from global services such as IAM to the log files. | `bool` | `true` | no |
 | include\_management\_events | Specify if you want your event selector to include management events for your trail. | `bool` | `true` | no |
