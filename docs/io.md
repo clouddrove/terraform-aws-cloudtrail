@@ -33,6 +33,7 @@
 | s3\_bucket\_name | S3 bucket name for CloudTrail log. | `string` | `""` | no |
 | s3\_key\_prefix | (Optional) S3 key prefix that follows the name of the bucket you have designated for log file delivery. | `string` | `""` | no |
 | sns\_topic\_name | Specifies the name of the Amazon SNS topic defined for notification of log file delivery. | `string` | `null` | no |
+| tags | A map of tags to add to all resources | `map(string)` | `{}` | no |
 
 ## Outputs
 
